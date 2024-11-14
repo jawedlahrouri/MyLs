@@ -1,7 +1,14 @@
+##
+## EPITECH PROJECT, 2024
+## Makefile
+## File description:
+## makefile
+##
+
 pathdir = lib
 
 NAME = libmy.a
-EXEC = my_ls	
+EXEC = my_ls
 
 
 
