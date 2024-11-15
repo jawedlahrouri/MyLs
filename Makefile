@@ -41,6 +41,8 @@ LIB_OBJ =  $(LIB:.c=.o)
 
 $(NAME):	$(LIB_OBJ)
 		ar rcs $(NAME) $(LIB_OBJ)
+		$(MAKE) clean
+		gcc -g $(SRC) -Iinclude -L. -lmy -o $(EXEC)
 
 $(EXEC): $(OBJ) $(NAME)
 		gcc -o $(EXEC) $(OBJ) -Iinclude -L -lmy
