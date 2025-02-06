@@ -56,14 +56,16 @@ char **dir_to_tab(char *path)
     return tab;
 }
 
-void find_flag(char *flags, int *flag_l)
+void find_flag(char *flags, int *flag_l, int *flag_a)
 {
     for (int i = 0; flags[i] != '\0'; i++)
         if (flags[i] == 'l')
             *flag_l = 1;
+        else if (flags[i] == 'a')
+            *flag_a = 1;
 }
 
-static print_separator(char **tab, int i)
+static void print_separator(char **tab, int i)
 {
     if (tab[i + 1] == NULL)
         my_putchar('\n');
@@ -75,11 +77,12 @@ void list_directory(char *path, char *flags)
 {
     char full_path[1024];
     int flag_l = 0;
-    char **tab = dir_to_tab(path);
-    char *buffer = NULL;
+    int flag_a = 0;
+    char **tab = NULL;
 
     if (flags != NULL)
-        find_flag(flags, &flag_l);
+        find_flag(flags, &flag_l, &flag_a);
+    tab = dir_to_tab(path);
     for (int i = 0; tab[i] != NULL; i++) {
         if (flag_l == 1){
             print_flagl(tab[i]);
@@ -100,7 +103,7 @@ int main(int argc, char **argv)
         if (argv[i][0] == '/')
             path = argv[i];
         else if (argv[i][0] == '-' && flags == NULL){
-            flags = strdup(argv[i]);
+            flags = my_strdup(argv[i]);
         }
     if (path == NULL)
         path = ".";

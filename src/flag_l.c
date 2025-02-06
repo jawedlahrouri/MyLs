@@ -60,7 +60,7 @@ void fill_buffer(struct stat *fs, char *buf, char *perm, char *time)
     my_strcat(buf, time);
 }
 
-static extract_time(time_t raw_time, char *buffer)
+static void extract_time(time_t raw_time, char *buffer)
 {
     char *time_str = ctime(&raw_time);
 
