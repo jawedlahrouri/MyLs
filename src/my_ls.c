@@ -64,7 +64,7 @@ void parse_argument(char *arg, char **path, char **flags)
         if (*flags == NULL)
             *flags = my_strdup(arg);
         else {
-            temp = malloc(strlen(*flags) + my_strlen(arg) + 1);
+            temp = malloc(my_strlen(*flags) + my_strlen(arg) + 1);
             my_strcpy(temp, *flags);
             my_strcat(temp, arg + 1);
             free(*flags);
@@ -81,7 +81,6 @@ int main(int argc, char **argv)
     char *flags = NULL;
     int flag_l = 0;
     int flag_a = 0;
-    struct stat path_stat;
 
     for (int i = 1; i < argc; i++)
         parse_argument(argv[i], &path, &flags);

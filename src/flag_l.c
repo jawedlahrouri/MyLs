@@ -41,7 +41,7 @@ void int_to_str(long num, char *buffer)
     buffer[j] = '\0';
 }
 
-void fill_buffer(struct stat *fs, char *buf, char *perm, char *time)
+void fill_buffer(struct stat *fs, char *buf, char *time)
 {
     char temp[256];
     char temp2[256];
@@ -102,7 +102,7 @@ void print_flagl(const char *file)
     char *buf = malloc(sizeof(char) * 1024);
 
     file_data(file, &fs, perm, time);
-    fill_buffer(&fs, buf, perm, time);
+    fill_buffer(&fs, buf, time);
     my_printf("%s%s ", perm, buf);
     return;
 }
