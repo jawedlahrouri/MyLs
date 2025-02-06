@@ -7,7 +7,7 @@
 
 #include "../include/my.h"
 
-int my_put_nbr(int nb)
+void my_put_nbr(int nb)
 {
     if (nb < 0) {
         my_putchar('-');

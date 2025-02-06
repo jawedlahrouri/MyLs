@@ -16,6 +16,6 @@ char *my_strcat(char *dest, char const *src)
     for (int i = 0; i != srclen; i++) {
         dest[i + lendest] = src[i];
     }
-    dest[totallen + 1] = '\0';
+    dest[totallen] = '\0';
     return (dest);
 }

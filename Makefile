@@ -12,7 +12,10 @@ EXEC = my_ls
 
 
 
-SRC	=	my_ls.c \
+SRC	=	./src/my_ls.c \
+		./src/flag_l.c \
+		$(pathdir)/my_strdup.c \
+		$(pathdir)/my_strncmp.c \
 		$(pathdir)/my_compute_power_rec.c \
 		$(pathdir)/my_compute_square_root.c \
 		$(pathdir)/my_isneg.c \
@@ -34,33 +37,28 @@ SRC	=	my_ls.c \
 		$(pathdir)/flag_x.c \
 		$(pathdir)/flag_x2.c \
 		$(pathdir)/my_printf.c \
+		$(pathdir)/my_sort_params.c
 
 OBJ  	=	 $(SRC:.c=.o)
 
-LIB_OBJ =  $(LIB:.c=.o)
+ORGANIZED = my_ls
+CFLAGS = -Iinclude/ -W -Wall -Wextra
 
-$(NAME):	$(LIB_OBJ)
-		ar rcs $(NAME) $(LIB_OBJ)
-		$(MAKE) clean
-		gcc -g $(SRC) -Iinclude -L. -lmy -o $(EXEC)
+$(ORGANIZED): $(OBJ)
+		gcc $(OBJ) -o $(ORGANIZED) $(CFLAGS) $(LDFLAGS)
 
-$(EXEC): $(OBJ) $(NAME)
-		gcc -o $(EXEC) $(OBJ) -Iinclude -L -lmy
-
-all: 	$(NAME) $(EXEC)
-
-
+all: 	$(ORGANIZED)
 
 clean:
-		rm -f $(OBJ) $(LIB_OBJ)
-
+		rm -f $(OBJ)
 
 fclean: clean
-		rm -f $(NAME) $(TEST) $(OBJ)ç
+		rm -f $(ORGANIZED)
 
 re:
 		$(MAKE) fclean
 		$(MAKE) all
+
 debug:
 		$(MAKE) clean
-		gcc -g $(SRC) -Iinclude -L. -lmy -o $(EXEC)
+		gcc -g -Wall -Wextra -W $(SRC) -o $(ORGANIZED) $(CFLAGS)

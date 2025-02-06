@@ -11,9 +11,9 @@
 #ifndef MY_H
     #define MY_H
 int my_isneg(int nb);
-int my_put_nbr(int nb);
+void my_put_nbr(int nb);
 void my_swap(int *a, int *b);
-int my_putstr(char const *str);
+void my_putstr(char const *str);
 int my_strlen(char const *str);
 int my_compute_power_rec(int nb, int power);
 int my_compute_square_root(int nb);
@@ -24,17 +24,18 @@ char *my_strcat(char *dest, char const *src);
 char *my_strncat(char *dest, char const *src, int nb);
 void my_putchar(char c);
 int my_printf(const char *format, ...);
-int flag_d(va_list list);
-int flag_o(va_list list);
-int flag_s(va_list list);
-int flag_i(va_list list);
-int flag_c(va_list list);
-int flag_percent(va_list list);
-int flag_x2(va_list list);
-int flag_x(va_list list);
-void blank(char *blank);
+void flag_d(va_list list);
+void flag_o(va_list list);
+void flag_s(va_list list);
+void flag_i(va_list list);
+void flag_c(va_list list);
+void flag_percent(va_list list);
+void flag_x2(va_list list);
+void flag_x(va_list list);
 int flag_detector(const char *format, int i, va_list list);
-int my_ls(int argc, char **argv);
 int main(int argc, char **argv);
-
+int my_strncmp(char *const str1, char *const str2);
+int bubble_sort(char **tab);
+char *my_strdup(char const *src);
+void print_flagl(const char *file);
 #endif /*my.h*/
