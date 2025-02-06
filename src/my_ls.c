@@ -63,13 +63,14 @@ void find_flag(char *flags, int *flag_l)
             *flag_l = 1;
 }
 
-void print_separator(char **tab, int i)
+static print_separator(char **tab, int i)
 {
     if (tab[i + 1] == NULL)
         my_putchar('\n');
     else
         my_putstr("  ");
 }
+
 void list_directory(char *path, char *flags)
 {
     char full_path[1024];
@@ -83,7 +84,7 @@ void list_directory(char *path, char *flags)
         if (flag_l == 1){
             print_flagl(tab[i]);
             my_printf("%s\n", tab[i]);
-        } else{
+        } else {
             my_printf("%s", tab[i]);
             print_separator(tab, i);
         }
