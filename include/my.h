@@ -38,4 +38,5 @@ int my_strncmp(char *const str1, char *const str2);
 int bubble_sort(char **tab);
 char *my_strdup(char const *src);
 void print_flagl(const char *file);
+char **dir_to_tab(char *path, int flag_a);
 #endif /*my.h*/

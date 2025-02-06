@@ -17,52 +17,14 @@
 #include <time.h>
 #include "../include/my.h"
 
-int count_directory(char *path)
-{
-    DIR *dir = opendir(path);
-    struct dirent *entry;
-    int count = 0;
-
-    if (!dir)
-        return 0;
-    entry = readdir(dir);
-    for (entry = readdir(dir); entry != NULL; entry = readdir(dir)) {
-        if (entry->d_name[0] != '.')
-            count++;
-    }
-    closedir(dir);
-    return count;
-}
-
-char **dir_to_tab(char *path)
-{
-    DIR *dir = opendir(path);
-    struct dirent *entry;
-    char **tab = malloc(sizeof(char *) * (count_directory(path) + 1));
-    int i = 0;
-
-    if (!dir)
-        return NULL;
-    entry = readdir(dir);
-    for (entry = readdir(dir); entry != NULL; entry = readdir(dir)) {
-        if (entry->d_name[0] != '.') {
-            tab[i] = my_strdup(entry->d_name);
-            i++;
-        }
-    }
-    tab[i] = NULL;
-    bubble_sort(tab);
-    closedir(dir);
-    return tab;
-}
-
 void find_flag(char *flags, int *flag_l, int *flag_a)
 {
-    for (int i = 0; flags[i] != '\0'; i++)
+    for (int i = 0; flags[i] != '\0'; i++) {
         if (flags[i] == 'l')
             *flag_l = 1;
-        else if (flags[i] == 'a')
+        if (flags[i] == 'a')
             *flag_a = 1;
+    }
 }
 
 static void print_separator(char **tab, int i)
@@ -75,14 +37,13 @@ static void print_separator(char **tab, int i)
 
 void list_directory(char *path, char *flags)
 {
-    char full_path[1024];
     int flag_l = 0;
     int flag_a = 0;
     char **tab = NULL;
 
     if (flags != NULL)
         find_flag(flags, &flag_l, &flag_a);
-    tab = dir_to_tab(path);
+    tab = dir_to_tab(path, flag_a);
     for (int i = 0; tab[i] != NULL; i++) {
         if (flag_l == 1){
             print_flagl(tab[i]);
@@ -94,19 +55,40 @@ void list_directory(char *path, char *flags)
     }
 }
 
+void parse_argument(char *arg, char **path, char **flags)
+{
+    struct stat path_stat;
+    char *temp = NULL;
+
+    if (arg[0] == '-') {
+        if (*flags == NULL)
+            *flags = my_strdup(arg);
+        else {
+            temp = malloc(strlen(*flags) + my_strlen(arg) + 1);
+            my_strcpy(temp, *flags);
+            my_strcat(temp, arg + 1);
+            free(*flags);
+            *flags = temp;
+        }
+    } else if (stat(arg, &path_stat) == 0 && S_ISDIR(path_stat.st_mode)) {
+        *path = arg;
+    }
+}
+
 int main(int argc, char **argv)
 {
     char *path = NULL;
     char *flags = NULL;
+    int flag_l = 0;
+    int flag_a = 0;
+    struct stat path_stat;
 
-    for (int i = 1; argv[i] != NULL; i++)
-        if (argv[i][0] == '/')
-            path = argv[i];
-        else if (argv[i][0] == '-' && flags == NULL){
-            flags = my_strdup(argv[i]);
-        }
+    for (int i = 1; i < argc; i++)
+        parse_argument(argv[i], &path, &flags);
     if (path == NULL)
         path = ".";
+    if (flags != NULL)
+        find_flag(flags, &flag_l, &flag_a);
     list_directory(path, flags);
     return 0;
 }

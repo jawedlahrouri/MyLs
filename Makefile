@@ -14,6 +14,7 @@ EXEC = my_ls
 
 SRC	=	./src/my_ls.c \
 		./src/flag_l.c \
+		./src/list_directory.c \
 		$(pathdir)/my_strdup.c \
 		$(pathdir)/my_strncmp.c \
 		$(pathdir)/my_compute_power_rec.c \
