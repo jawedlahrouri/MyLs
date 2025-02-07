@@ -46,8 +46,10 @@ void print_entries(char **tab, ls_flags_t *flags)
 {
     int total = 0;
 
+    if (flags->flag_t)
+        sort_time(tab);
     if (flags->flag_r)
-        reverse_array(tab);
+        reverse_tab(tab);
     if (flags->flag_l) {
         total = calculate_total(tab);
         my_printf("total %d\n", total);

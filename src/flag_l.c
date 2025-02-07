@@ -55,9 +55,9 @@ void fill_buffer(struct stat *fs, char *buf, char *time)
     my_printf("%s ", time);
 }
 
-static void extract_time(time_t raw_time, char *buffer)
+static void extract_time(time_t time, char *buffer)
 {
-    char *time_str = ctime(&raw_time);
+    char *time_str = ctime(&time);
 
     if (!time_str)
         return;

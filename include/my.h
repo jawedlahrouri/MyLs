@@ -17,6 +17,7 @@ typedef struct {
     int flag_a;
     int flag_r;
     int flag_d;
+    int flag_t;
 } ls_flags_t;
 
 int my_isneg(int nb);
@@ -49,10 +50,11 @@ char *my_strdup(char const *src);
 void print_flagl(const char *file);
 char **dir_to_tab(char *path, int flag_a);
 int my_strnmajcmp(char *str1, char *str2);
-void reverse_array(char **tab);
+void reverse_tab(char **tab);
 int execute_flags(char *path, ls_flags_t *flags);
 void find_flags(char *flags_str, ls_flags_t *flags);
 void initilize_flags(ls_flags_t *flags);
 int calculate_total(char **tab);
 void parse_argument(char *arg, char **path, char **flags);
+void sort_time(char **tab);
 #endif /*my.h*/

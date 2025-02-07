@@ -42,6 +42,8 @@ void find_flags(char *flags_str, ls_flags_t *flags)
         flags->flag_r = 1;
         if (flags_str[i] == 'd')
         flags->flag_d = 1;
+        if (flags_str[i] == 't')
+            flags->flag_t = 1;
     }
 }
 
@@ -51,19 +53,21 @@ void initilize_flags(ls_flags_t *flags)
     flags->flag_a = 0;
     flags->flag_r = 0;
     flags->flag_d = 0;
+    flags->flag_t = 0;
 }
 
 int calculate_total(char **tab)
 {
     struct stat file_stat;
-    int total_blocks = 0;
+    int total = 0;
 
     for (int i = 0; tab[i] != NULL; i++) {
         if (stat(tab[i], &file_stat) == 0) {
-            total_blocks += file_stat.st_blocks;
+            total += file_stat.st_blocks;
         }
     }
-    return total_blocks;
+    total = total / 2;
+    return total;
 }
 
 void parse_argument(char *arg, char **path, char **flags)

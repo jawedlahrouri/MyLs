@@ -16,6 +16,7 @@ SRC	=	./src/my_ls.c \
 		./src/flag_l.c \
 		./src/list_directory.c \
 		./src/ls_flags.c \
+		./src/flag_t.c \
 		$(pathdir)/my_strnmajcmp.c \
 		$(pathdir)/my_strdup.c \
 		$(pathdir)/my_strncmp.c \

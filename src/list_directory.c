@@ -53,7 +53,7 @@ char **dir_to_tab(char *path, int flag_a)
     return tab;
 }
 
-void reverse_array(char **tab)
+void reverse_tab(char **tab)
 {
     int i = 0;
     int j = 0;
