@@ -30,7 +30,7 @@ int handle_errors(char *path)
     return 0;
 }
 
-int check_directory_access(char *path)
+int check_directory(char *path)
 {
     DIR *dir = opendir(path);
 
@@ -42,14 +42,14 @@ int check_directory_access(char *path)
     return 0;
 }
 
-void print_sorted_entries(char **tab, ls_flags_t *flags)
+void print_entries(char **tab, ls_flags_t *flags)
 {
     int total = 0;
 
     if (flags->flag_r)
         reverse_array(tab);
     if (flags->flag_l) {
-        total = calculate_total_blocks(tab);
+        total = calculate_total(tab);
         my_printf("total %d\n", total);
     }
     for (int i = 0; tab[i] != NULL; i++) {
@@ -64,17 +64,17 @@ int list_directory(char *path, char *flags_str)
     ls_flags_t flags;
     char **tab = NULL;
 
-    init_flags(&flags);
+    initilize_flags(&flags);
     if (flags_str != NULL)
         find_flags(flags_str, &flags);
+    if (check_directory(path) == 84)
+        return 84;
     if (handle_errors(path) == 84)
         return 84;
-    if (process_flags(path, &flags) == 84)
-        return 84;
-    if (check_directory_access(path) == 84)
+    if (execute_flags(path, &flags) == 84)
         return 84;
     tab = dir_to_tab(path, flags.flag_a);
-    print_sorted_entries(tab, &flags);
+    print_entries(tab, &flags);
     return 0;
 }
 

@@ -50,9 +50,9 @@ void print_flagl(const char *file);
 char **dir_to_tab(char *path, int flag_a);
 int my_strnmajcmp(char *str1, char *str2);
 void reverse_array(char **tab);
-int process_flags(char *path, ls_flags_t *flags);
+int execute_flags(char *path, ls_flags_t *flags);
 void find_flags(char *flags_str, ls_flags_t *flags);
-void init_flags(ls_flags_t *flags);
-int calculate_total_blocks(char **tab);
+void initilize_flags(ls_flags_t *flags);
+int calculate_total(char **tab);
 void parse_argument(char *arg, char **path, char **flags);
 #endif /*my.h*/

@@ -17,7 +17,7 @@
 #include <time.h>
 #include "../include/my.h"
 
-int process_flags(char *path, ls_flags_t *flags)
+int execute_flags(char *path, ls_flags_t *flags)
 {
     struct stat path_stat;
 
@@ -45,7 +45,7 @@ void find_flags(char *flags_str, ls_flags_t *flags)
     }
 }
 
-void init_flags(ls_flags_t *flags)
+void initilize_flags(ls_flags_t *flags)
 {
     flags->flag_l = 0;
     flags->flag_a = 0;
@@ -53,7 +53,7 @@ void init_flags(ls_flags_t *flags)
     flags->flag_d = 0;
 }
 
-int calculate_total_blocks(char **tab)
+int calculate_total(char **tab)
 {
     struct stat file_stat;
     int total_blocks = 0;
