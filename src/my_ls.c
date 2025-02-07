@@ -24,15 +24,11 @@ void find_flag(char *flags, int *flag_l, int *flag_a)
             *flag_l = 1;
         if (flags[i] == 'a')
             *flag_a = 1;
+        if (flags[i] == 'r')
+            *flag_l = 1;
+        if (flags[i] == 'd')
+            *flag_a = 1;
     }
-}
-
-static void print_separator(char **tab, int i)
-{
-    if (tab[i + 1] == NULL)
-        my_putchar('\n');
-    else
-        my_putstr("  ");
 }
 
 void list_directory(char *path, char *flags)
@@ -50,7 +46,7 @@ void list_directory(char *path, char *flags)
             my_printf("%s\n", tab[i]);
         } else {
             my_printf("%s", tab[i]);
-            print_separator(tab, i);
+            my_putchar('\n');
         }
     }
 }

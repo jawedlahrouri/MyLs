@@ -43,21 +43,16 @@ void int_to_str(long num, char *buffer)
 
 void fill_buffer(struct stat *fs, char *buf, char *time)
 {
-    char temp[256];
-    char temp2[256];
-
     buf[0] = '\0';
-    int_to_str(fs->st_nlink, temp);
-    my_strcat(buf, temp);
+    my_printf("%d", fs->st_nlink);
     my_strcat(buf, " ");
     my_strcat(buf, getpwuid(fs->st_uid) ? getpwuid(fs->st_uid)->pw_name : "?");
     my_strcat(buf, " ");
     my_strcat(buf, getgrgid(fs->st_gid) ? getgrgid(fs->st_gid)->gr_name : "?");
     my_strcat(buf, " ");
-    int_to_str(fs->st_size, temp);
-    my_strcat(buf, temp2);
-    my_strcat(buf, " ");
-    my_strcat(buf, time);
+    my_printf("%s ", buf);
+    my_printf("%d ", fs->st_size);
+    my_printf("%s", time);
 }
 
 static void extract_time(time_t raw_time, char *buffer)
@@ -102,7 +97,8 @@ void print_flagl(const char *file)
     char *buf = malloc(sizeof(char) * 1024);
 
     file_data(file, &fs, perm, time);
+    my_printf("%s ", perm);
     fill_buffer(&fs, buf, time);
-    my_printf("%s%s ", perm, buf);
+    my_printf("%s ", buf);
     return;
 }
