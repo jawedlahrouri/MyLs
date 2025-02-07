@@ -17,38 +17,77 @@
 #include <time.h>
 #include "../include/my.h"
 
-void find_flag(char *flags, int *flag_l, int *flag_a)
+void init_flags(ls_flags_t *flags)
 {
-    for (int i = 0; flags[i] != '\0'; i++) {
-        if (flags[i] == 'l')
-            *flag_l = 1;
-        if (flags[i] == 'a')
-            *flag_a = 1;
-        if (flags[i] == 'r')
-            *flag_l = 1;
-        if (flags[i] == 'd')
-            *flag_a = 1;
+    flags->flag_l = 0;
+    flags->flag_a = 0;
+    flags->flag_r = 0;
+    flags->flag_d = 0;
+}
+
+void find_flags(char *flags_str, ls_flags_t *flags)
+{
+    for (int i = 0; flags_str[i] != '\0'; i++) {
+        if (flags_str[i] == 'l')
+            flags->flag_l = 1;
+        if (flags_str[i] == 'a')
+        flags->flag_a = 1;
+        if (flags_str[i] == 'r')
+        flags->flag_r = 1;
+        if (flags_str[i] == 'd')
+        flags->flag_d = 1;
     }
 }
 
-void list_directory(char *path, char *flags)
+int handle_errors(char *path)
 {
-    int flag_l = 0;
-    int flag_a = 0;
-    char **tab = NULL;
+    if (access(path, F_OK) != 0) {
+        my_printf("ls: cannot access '%s': No such file or directory\n", path);
+        return 84;
+    }
+    if (access(path, R_OK) != 0) {
+        my_printf("ls: cannot open directory '%s': Permission denied\n", path);
+        return 84;
+    }
+    return 0;
+}
 
-    if (flags != NULL)
-        find_flag(flags, &flag_l, &flag_a);
-    tab = dir_to_tab(path, flag_a);
+int list_directory(char *path, char *flags_str)
+{
+    ls_flags_t flags;
+    char **tab = NULL;
+    struct stat path_stat;
+    DIR *dir;
+
+    init_flags(&flags);
+    if (flags_str != NULL)
+        find_flags(flags_str, &flags);
+    if (handle_errors(path) == 84)
+        return 84;
+    stat(path, &path_stat);
+    if (flags.flag_d) {
+        if (flags.flag_l)
+            print_flagl(path);
+        my_printf("%s\n", path);
+        return 84;
+    }
+    dir = opendir(path);
+    if (!dir) {
+        my_printf("ls: cannot open directory '%s': Permission denied\n", path);
+        return 84;
+    }
+    closedir(dir);
+    tab = dir_to_tab(path, flags.flag_a);
+    if (flags.flag_r)
+        reverse_array(tab);
     for (int i = 0; tab[i] != NULL; i++) {
-        if (flag_l == 1){
+        if (flags.flag_l == 1){
             print_flagl(tab[i]);
             my_printf("%s\n", tab[i]);
-        } else {
-            my_printf("%s", tab[i]);
-            my_putchar('\n');
-        }
+        } else
+            my_printf("%s\n", tab[i]);
     }
+    return 0;
 }
 
 void parse_argument(char *arg, char **path, char **flags)
@@ -66,24 +105,24 @@ void parse_argument(char *arg, char **path, char **flags)
             free(*flags);
             *flags = temp;
         }
-    } else if (stat(arg, &path_stat) == 0 && S_ISDIR(path_stat.st_mode)) {
+    } else if (stat(arg, &path_stat) == 0) {
         *path = arg;
+    } else {
+        my_printf("ls: cannot access '%s': No such file or directory\n", arg);
+        exit(84);
     }
 }
 
 int main(int argc, char **argv)
 {
     char *path = NULL;
-    char *flags = NULL;
-    int flag_l = 0;
-    int flag_a = 0;
+    char *flags_str = NULL;
 
     for (int i = 1; i < argc; i++)
-        parse_argument(argv[i], &path, &flags);
+        parse_argument(argv[i], &path, &flags_str);
     if (path == NULL)
         path = ".";
-    if (flags != NULL)
-        find_flag(flags, &flag_l, &flag_a);
-    list_directory(path, flags);
+    if (list_directory(path, flags_str) == 84)
+        return 84;
     return 0;
 }

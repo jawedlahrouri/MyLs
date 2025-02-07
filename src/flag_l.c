@@ -50,9 +50,9 @@ void fill_buffer(struct stat *fs, char *buf, char *time)
     my_strcat(buf, " ");
     my_strcat(buf, getgrgid(fs->st_gid) ? getgrgid(fs->st_gid)->gr_name : "?");
     my_strcat(buf, " ");
-    my_printf("%s ", buf);
+    my_printf("%s", buf);
     my_printf("%d ", fs->st_size);
-    my_printf("%s", time);
+    my_printf("%s ", time);
 }
 
 static void extract_time(time_t raw_time, char *buffer)
@@ -69,16 +69,17 @@ static void extract_time(time_t raw_time, char *buffer)
 
 static void get_permissions(mode_t mode, char *buffer)
 {
-    buffer[0] = (mode & S_IRUSR) ? 'r' : '-';
-    buffer[1] = (mode & S_IWUSR) ? 'w' : '-';
-    buffer[2] = (mode & S_IXUSR) ? 'x' : '-';
-    buffer[3] = (mode & S_IRGRP) ? 'r' : '-';
-    buffer[4] = (mode & S_IWGRP) ? 'w' : '-';
-    buffer[5] = (mode & S_IXGRP) ? 'x' : '-';
-    buffer[6] = (mode & S_IROTH) ? 'r' : '-';
-    buffer[7] = (mode & S_IWOTH) ? 'w' : '-';
-    buffer[8] = (mode & S_IXOTH) ? 'x' : '-';
-    buffer[9] = '\0';
+    buffer[0] = (S_ISDIR(mode)) ? 'd' : '-';
+    buffer[1] = (mode & S_IRUSR) ? 'r' : '-';
+    buffer[2] = (mode & S_IWUSR) ? 'w' : '-';
+    buffer[3] = (mode & S_IXUSR) ? 'x' : '-';
+    buffer[4] = (mode & S_IRGRP) ? 'r' : '-';
+    buffer[5] = (mode & S_IWGRP) ? 'w' : '-';
+    buffer[6] = (mode & S_IXGRP) ? 'x' : '-';
+    buffer[7] = (mode & S_IROTH) ? 'r' : '-';
+    buffer[8] = (mode & S_IWOTH) ? 'w' : '-';
+    buffer[9] = (mode & S_IXOTH) ? 'x' : '-';
+    buffer[10] = '\0';
 }
 
 void file_data(const char *file, struct stat *fs, char *perm, char *time)
@@ -99,6 +100,5 @@ void print_flagl(const char *file)
     file_data(file, &fs, perm, time);
     my_printf("%s ", perm);
     fill_buffer(&fs, buf, time);
-    my_printf("%s ", buf);
     return;
 }

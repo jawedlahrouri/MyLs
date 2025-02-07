@@ -5,11 +5,20 @@
 ** Header avec les fonctions
 */
 
+
 #include <stdio.h>
 #include <stdarg.h>
 
 #ifndef MY_H
     #define MY_H
+
+typedef struct {
+    int flag_l;
+    int flag_a;
+    int flag_r;
+    int flag_d;
+} ls_flags_t;
+
 int my_isneg(int nb);
 void my_put_nbr(int nb);
 void my_swap(int *a, int *b);
@@ -39,4 +48,6 @@ int bubble_sort(char **tab);
 char *my_strdup(char const *src);
 void print_flagl(const char *file);
 char **dir_to_tab(char *path, int flag_a);
+int my_strnmajcmp(char *str1, char *str2);
+void reverse_array(char **tab);
 #endif /*my.h*/

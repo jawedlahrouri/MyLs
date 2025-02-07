@@ -52,3 +52,20 @@ char **dir_to_tab(char *path, int flag_a)
     closedir(dir);
     return tab;
 }
+
+void reverse_array(char **tab)
+{
+    int i = 0;
+    int j = 0;
+    char *temp;
+
+    for (j = 0; tab[j] != NULL; j++);
+    j--;
+    while (i < j) {
+        temp = tab[i];
+        tab[i] = tab[j];
+        tab[j] = temp;
+        i++;
+        j--;
+    }
+}

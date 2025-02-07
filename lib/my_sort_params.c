@@ -4,6 +4,7 @@
 ** File description:
 ** sort params
 */
+
 #include <stdarg.h>
 #include <stdio.h>
 #include "../include/my.h"
@@ -15,7 +16,7 @@ int sort_name(char **tab, int *swap)
     if (tab == NULL)
         return 84;
     for (int i = 0; tab[i + 1] != NULL; i++) {
-        if (my_strncmp(tab[i], tab[i + 1]) > 0) {
+        if (my_strnmajcmp(tab[i], tab[i + 1]) > 0) {
             temp = tab[i];
             tab[i] = tab[i + 1];
             tab[i + 1] = temp;
