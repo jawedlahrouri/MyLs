@@ -89,6 +89,6 @@ void parse_argument(char *arg, char **path, char **flags)
         *path = arg;
     } else {
         my_printf("ls: cannot access '%s': No such file or directory\n", arg);
-        exit(84);
+        return 84;
     }
 }
