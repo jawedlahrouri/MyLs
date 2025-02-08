@@ -19,17 +19,22 @@
 
 int handle_errors(char *path)
 {
-    if (access(path, F_OK) != 0) {
-        my_printf("ls: cannot access '%s': No such file or directory\n", path);
+    struct stat path_stat;
+    DIR *dir;
+
+    if (stat(path, &path_stat) != 0)
         return 84;
+    if (S_ISDIR(path_stat.st_mode)) {
+        dir = opendir(path);
+        if (!dir) {
+            my_printf("ls: cannot open directory '%s': Permission denied\n", path);
+            return 84;
+        }
+        closedir(dir);
     }
-    if (access(path, R_OK) != 0) {
-        my_printf("ls: cannot open directory '%s': Permission denied\n", path);
-        return 84;
-    }
+
     return 0;
 }
-
 int check_directory(char *path)
 {
     DIR *dir = opendir(path);
