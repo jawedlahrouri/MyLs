@@ -17,7 +17,7 @@
 #include <time.h>
 #include "../include/my.h"
 
-int execute_flags(char *path, ls_flags_t *flags)
+int execute_flagd(char *path, ls_flags_t *flags)
 {
     struct stat path_stat;
 
@@ -26,7 +26,7 @@ int execute_flags(char *path, ls_flags_t *flags)
         if (flags->flag_l)
             print_flagl(path);
         my_printf("%s\n", path);
-        return 84;
+        return 1;
     }
     return 0;
 }

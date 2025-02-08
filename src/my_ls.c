@@ -17,37 +17,6 @@
 #include <time.h>
 #include "../include/my.h"
 
-int handle_errors(char *path)
-{
-    struct stat path_stat;
-    DIR *dir;
-
-    if (stat(path, &path_stat) != 0)
-        return 84;
-    if (S_ISDIR(path_stat.st_mode)) {
-        dir = opendir(path);
-        if (!dir) {
-            my_printf("ls: cannot open directory '%s': ", path);
-            my_printf("Permission denied\n");
-            return 84;
-        }
-        closedir(dir);
-    }
-    return 0;
-}
-
-int check_directory(char *path)
-{
-    DIR *dir = opendir(path);
-
-    if (!dir) {
-        my_printf("ls: cannot open directory '%s': Permission denied\n", path);
-        return 84;
-    }
-    closedir(dir);
-    return 0;
-}
-
 void print_entries(char **tab, ls_flags_t *flags)
 {
     int total = 0;
@@ -67,23 +36,50 @@ void print_entries(char **tab, ls_flags_t *flags)
     }
 }
 
+int handle_file(char *path, ls_flags_t *flags)
+{
+    struct stat path_stat;
+
+    if (stat(path, &path_stat) != 0) {
+        my_printf("ls: cannot access '%s': No such file or directory\n", path);
+        return 84;
+    }
+    if (S_ISREG(path_stat.st_mode)) {
+        if (flags->flag_l)
+            print_flagl(path);
+        my_printf("%s\n", path);
+        return 0;
+    }
+    return 1;
+}
+
+int handle_directory(char *path, ls_flags_t *flags)
+{
+    char **tab;
+    DIR *dir = opendir(path);
+
+    if (!dir) {
+        my_printf("ls: cannot open directory '%s': Permission denied\n", path);
+        return 84;
+    }
+    closedir(dir);
+    tab = dir_to_tab(path, flags->flag_a);
+    print_entries(tab, flags);
+    return 0;
+}
+
 int list_directory(char *path, char *flags_str)
 {
     ls_flags_t flags;
-    char **tab = NULL;
 
     initialize_flags(&flags);
-    if (flags_str != NULL)
+    if (flags_str)
         find_flags(flags_str, &flags);
-    if (check_directory(path) == 84)
-        return 84;
-    if (handle_errors(path) == 84)
-        return 84;
-    if (execute_flags(path, &flags) == 84)
-        return 84;
-    tab = dir_to_tab(path, flags.flag_a);
-    print_entries(tab, &flags);
-    return 0;
+    if (execute_flagd(path, &flags) == 1)
+        return 0;
+    if (handle_file(path, &flags) == 0)
+        return 0;
+    return handle_directory(path, &flags);
 }
 
 int main(int argc, char **argv)
