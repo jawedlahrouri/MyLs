@@ -72,7 +72,7 @@ int list_directory(char *path, char *flags_str)
     ls_flags_t flags;
     char **tab = NULL;
 
-    initilize_flags(&flags);
+    initialize_flags(&flags);
     if (flags_str != NULL)
         find_flags(flags_str, &flags);
     if (check_directory(path) == 84)

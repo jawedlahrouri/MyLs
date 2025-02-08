@@ -47,7 +47,7 @@ void find_flags(char *flags_str, ls_flags_t *flags)
     }
 }
 
-void initilize_flags(ls_flags_t *flags)
+void initialize_flags(ls_flags_t *flags)
 {
     flags->flag_l = 0;
     flags->flag_a = 0;
