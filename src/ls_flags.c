@@ -70,7 +70,7 @@ int calculate_total(char **tab)
     return total;
 }
 
-void parse_argument(char *arg, char **path, char **flags)
+int parse_argument(char *arg, char **path, char **flags)
 {
     struct stat path_stat;
     char *temp = NULL;
@@ -91,4 +91,5 @@ void parse_argument(char *arg, char **path, char **flags)
         my_printf("ls: cannot access '%s': No such file or directory\n", arg);
         return 84;
     }
+    return 0;
 }

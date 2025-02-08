@@ -86,7 +86,8 @@ int main(int argc, char **argv)
     char *flags_str = NULL;
 
     for (int i = 1; i < argc; i++)
-        parse_argument(argv[i], &path, &flags_str);
+        if (parse_argument(argv[i], &path, &flags_str) == 84)
+            return 84;
     if (path == NULL)
         path = ".";
     if (list_directory(path, flags_str) == 84)

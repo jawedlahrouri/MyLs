@@ -55,6 +55,6 @@ int execute_flags(char *path, ls_flags_t *flags);
 void find_flags(char *flags_str, ls_flags_t *flags);
 void initilize_flags(ls_flags_t *flags);
 int calculate_total(char **tab);
-void parse_argument(char *arg, char **path, char **flags);
+int parse_argument(char *arg, char **path, char **flags);
 void sort_time(char **tab);
 #endif /*my.h*/
