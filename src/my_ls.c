@@ -27,14 +27,15 @@ int handle_errors(char *path)
     if (S_ISDIR(path_stat.st_mode)) {
         dir = opendir(path);
         if (!dir) {
-            my_printf("ls: cannot open directory '%s': Permission denied\n", path);
+            my_printf("ls: cannot open directory '%s': ", path);
+            my_printf("Permission denied\n");
             return 84;
         }
         closedir(dir);
     }
-
     return 0;
 }
+
 int check_directory(char *path)
 {
     DIR *dir = opendir(path);
